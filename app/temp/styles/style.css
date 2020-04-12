@@ -698,16 +698,16 @@ a{
         opacity: .95;
         background-repeat: no-repeat;
         background-size: cover;
-        background-image: url('../../assets/images/pizzeria-dolce&salato-small.jpg');
+        /* background-image: url('../../assets/images/pizzeria-dolce&salato-small.jpg'); */
         background-image: 
         -webkit-image-set(
         url('../../assets/images/pizzeria-dolce&salato-small.jpg') 1x,
-        url('../../assets/images/pizzeria-dolce&salato-hi-dpi.jpg') 2x
+        url('../../assets/images/pizzeria-dolce&salato-small-hi-dpi.jpg') 2x
         );
         background-image: 
         image-set(
         url('../../assets/images/pizzeria-dolce&salato-small.jpg') 1x,
-        url('../../assets/images/pizzeria-dolce&salato-hi-dpi.jpg') 2x
+        url('../../assets/images/pizzeria-dolce&salato-small-hi-dpi.jpg') 2x
         );
     }
 
