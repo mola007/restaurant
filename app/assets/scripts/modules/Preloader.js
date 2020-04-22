@@ -1,48 +1,60 @@
-import $ from 'jquery';
-
 class Preloader{
 
-    constructor(){
-      this.bannerPhoto = $('.banner__photo');
-      this.bannerPhotoContainer = $('.banner__photo-container');
-      this.addHTML();
-      this.preloader = $('.preloader');
-      this.events();
-    }
+  constructor(){  
 
-    events(){
-      $(window).on('load', this.hideLoader.bind(this)); 
-    }
+  this.bannerPhotoContainer = document.querySelector('.banner__photo-container');
+  this.bannerPhotoWrapper = document.querySelector('.banner__photo-wrapper');
+  //this.hideInitially();
+  this.addHTML();
+  this.loader;
 
-    hideLoader(){
-      console.log('hide loader');
+  this.events();   
+  }
+
+  hideInitially(){
+    this.bannerPhotoWrapper.style.display = "none";
+    this.bannerPhotoWrapper.style.opacity = 0;
+  }
+
+  events(){       
+  window.addEventListener('load', this.hideLoader.bind(this)); 
+  }
+
+  hideLoader(){
+     
       setTimeout(() => {
-          this.preloader.addClass('preloader--hide');
-          this.bannerPhotoContainer.hide().fadeIn(500);
-      }, 1500);    
-    } 
+          this.loader.style.opacity = 0;
+          this.loader.style.display = 'none';
 
+          this.bannerPhotoWrapper.style.display = 'block';
+          
+          setTimeout(()=>this.bannerPhotoWrapper.style.opacity = 1, 50);
+       
+          }, 1500); 
+  }
+ 
 
-    addHTML(){
-      if(this.bannerPhotoContainer[0]){
-        this.bannerPhotoContainer.append(`
-          <div class="preloader">
-            <div class='preloader__dots'>
-              <div class='preloader__dot'></div>
-              <div class='preloader__dot'></div>
-              <div class='preloader__dot'></div>
-              <div class='preloader__dot'></div>
-              <div class='preloader__dot'></div>   
-            </div>
-          </div>
-          `);
-      }    
-  }  
+  addHTML(){
+    let preloaderHtml = `
+    <div class='preloader__dots'>
+      <div class='preloader__dot'></div>
+      <div class='preloader__dot'></div>
+      <div class='preloader__dot'></div>
+      <div class='preloader__dot'></div>
+      <div class='preloader__dot'></div>   
+    </div>
+  `;
 
+    let newElement = document.createElement('div'); 
+    newElement.className = "preloader";
+    this.bannerPhotoContainer.appendChild(newElement);
 
+    this.loader = document.querySelector('.preloader');
 
+    if(this.loader) this.loader.innerHTML = preloaderHtml;
    
-  
+}  
+
 }
 
 export default Preloader;

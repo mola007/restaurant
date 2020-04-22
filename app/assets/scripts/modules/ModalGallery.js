@@ -3,141 +3,86 @@ import $ from 'jquery';
 class ModalGallery{
     constructor(){
 
-      console.log('gallery');
-        this.modal = $('.modal');
-        this.modalImgWrapper = $('.modal__img-wrapper');
-        this.galleryImgWrapper = $('.gallery__img-wrapper');
-        this.current = $('#current');
-        this.next = $('.modal__btn--next');
-        this.prev = $('.modal__btn--prev');
-        this.close = $('.modal__close');
-        this.galleryImg = $('.gallery__img-wrapper').find('img');
-        this.nextAlt;
-        this.nextEl;
-        this.firstAlt;
-        this.firstEl;
-        this.currentThumbnail;
-        
+      this.modal = document.querySelector('.modal');
+      this.thumbnailsPar = document.querySelector('.gallery__grid');
+      this.thumbnailsArr = Array.from(this.thumbnailsPar.children);
+      //this.thumbnailsArr = document.querySelectorAll('.gallery__img');
+      this.modalImgPar = document.querySelector('.modal__img-wrapper');
+      this.modalImgArr = Array.from(this.modalImgPar.children);
+      this.next = document.querySelector('.modal__btn--next');
+      this.prev = document.querySelector('.modal__btn--prev');
+      this.currentImg;
+      this.close = document.querySelector('.modal__close');
+
         this.openModal();
         this.nextSlide();
         this.prevSlide();
-        this.closeModal();
-        
+        this.closeModal();   
     }
 
     openModal(){
-        let that = this;
-        this.galleryImgWrapper.on('click', function(e){
+    
+      let that = this;
 
-            let $this = $(this);
+      this.thumbnailsArr.forEach(img => img.addEventListener('click', function(e){
 
-            $('html,body').addClass('body-no-scroll');
-            that.modal.addClass("modal--is-visible");
+        //that.modal.classList.add("modal--is-visible");
+        that.modal.style.display = "block";
 
-            $this.addClass('gallery__img-wrapper--current');
+        setTimeout(()=>that.modal.classList.add('modal--is-visible'), 50);
 
+        document.body.classList.add('body-no-scroll');
 
-         let src = $this.find('img').attr('src');
-          let alt = $this.find('img').attr('alt');
+         
 
-           that.current.attr('alt', alt);
-           that.current.attr('src', src).addClass('fade-in');
+          that.modalImgArr.forEach(modalImg => {
 
-           setTimeout(()=>{
-             that.current.attr('src', src).removeClass('fade-in');
-            }, 400)
-        });
-        }
+            modalImg.src = modalImg.dataset.src;
 
-      closeModal(){
-        console.log('close modal');
-        let that = this;
-        this.close.on('click', function(){
-          that.modal.removeClass("modal--is-visible");
-          $('html,body').removeClass('body-no-scroll');
-          that.galleryImgWrapper.removeClass('gallery__img-wrapper--current');
-        })
-
-    };
-
-  
+            if(e.target.src == modalImg.src)modalImg.classList.add('modal__img--current');
+        
+          });
+        }));  
+      }
 
         nextSlide(){
-          let that = this;
+          this.next.addEventListener('click', ()=>{
+            this.current = document.querySelector('.modal__img--current');
+            this.current.classList.remove('modal__img--current');
 
-           this.next.on('click', function(e){
-            that.currentThumbnail = $('.gallery__img-wrapper--current');
-            that.currentThumbnail.removeClass('gallery__img-wrapper--current');
-
-              if(that.currentThumbnail.next().length){
-
-                that.currentThumbnail.next().addClass('gallery__img-wrapper--current');
-
-                that.nextAlt = that.currentThumbnail.next().find('img').attr('alt');
-                that.current.attr('alt', that.nextAlt);
-
-                that.nextEl = that.currentThumbnail.next().find('img').attr('src');
-                that.current.attr('src', that.nextEl).addClass('fade-in');
-
-                  setTimeout(()=>{
-                   that.current.attr('src', that.nextEl).removeClass('fade-in');
-                  }, 400);
-                }
-                else{
-
-                that.firstAlt = that.galleryImgWrapper.eq(0).find('img').attr('alt');
-                that.current.attr('alt', that.firstAlt);
-
-                that.firstEl = that.galleryImgWrapper.eq(0).find('img').attr('src');
-                that.current.attr('src', that.firstEl).addClass('fade-in');
-
-                  setTimeout(()=>{
-                    that.current.attr('src', that.firstEl).removeClass('fade-in');
-                   }, 400)
-
-                   that.galleryImgWrapper.eq(0).addClass('gallery__img-wrapper--current');
-                 }
-           });
+            if(this.current.nextElementSibling){
+              this.current.nextElementSibling.classList.add('modal__img--current');
+              }else{
+                this.modalImgArr[0].classList.add('modal__img--current');    
+              }
+          })
         }
 
         prevSlide(){
-          let that = this;
+          this.prev.addEventListener('click', ()=>{
+            this.current = document.querySelector('.modal__img--current');
+            this.current.classList.remove('modal__img--current');
 
-           this.prev.on('click', function(e){
-            that.currentThumbnail = $('.gallery__img-wrapper--current');
-            that.currentThumbnail.removeClass('gallery__img-wrapper--current');
-
-              if(that.currentThumbnail.prev().length){
-
-                that.currentThumbnail.prev().addClass('gallery__img-wrapper--current');
-
-                that.prevAlt = that.currentThumbnail.prev().find('img').attr('alt');
-                that.current.attr('alt', that.prevAlt);
-
-                that.prevEl = that.currentThumbnail.prev().find('img').attr('src');
-               that.current.attr('src', that.prevEl).addClass('fade-in');
-
-                  setTimeout(()=>{
-                   that.current.attr('src', that.prevEl).removeClass('fade-in');
-                  }, 400);
-                }
-                else{
-
-                  that.lastAlt = that.galleryImgWrapper.eq(that.galleryImgWrapper.length - 1).find('img').attr('alt');
-                  that.current.attr('alt', that.lastAlt);
-
-                  that.lastEl = that.galleryImgWrapper.eq(that.galleryImgWrapper.length - 1).find('img').attr('src');
-                  that.current.attr('src', that.lastEl).addClass('fade-in');
-
-                  setTimeout(()=>{
-                    that.current.attr('src', that.lastEl).removeClass('fade-in');
-                   }, 400);
-
-                   that.galleryImgWrapper.eq(that.galleryImgWrapper.length - 1).addClass('gallery__img-wrapper--current');
-                 }
-           });
+            if(this.current.previousElementSibling){
+              this.current.previousElementSibling.classList.add('modal__img--current');
+              }else{
+              this.modalImgArr[this.modalImgArr.length - 1].classList.add('modal__img--current');  
+              }
+          })
+         
         }
 
+      closeModal(){
+        this.close.addEventListener('click', ()=>{
+            this.modal.style.display = "none";
+            this.modal.classList.remove("modal--is-visible");
+            document.body.classList.remove('body-no-scroll');
+            this.current = document.querySelector('.modal__img--current');
+            this.current.classList.remove('modal__img--current');     
+        });
+    };
+
+   
 }
 
 export default ModalGallery;

@@ -1,25 +1,39 @@
 import $ from 'jquery';
 
 class Menu{
-
     constructor(){
-        this.menuContent = $('.menu__content');
-        this.menuTab = $('.menu__tab-btn');   
+        this.menuContent = document.querySelectorAll('.menu__content');
+        this.menuTab = document.querySelectorAll('.menu__tab-btn'); 
+
         this.showContent();
     }
 
     showContent(){
-    let that = this;
-     $(document).on('click', '.menu__tab-btn', function(){
-         let $this = $(this);
-        that.menuTab.removeClass('menu__tab-btn--current');
-        that.menuContent.hide();
+        let that = this, i, j, k;
+        for(i = 0; i < this.menuTab.length; i++){
+            this.menuTab[i].addEventListener('click', function(e){
 
-        let currentContent =  $this.attr('data-content');
+                e.preventDefault();
 
-        $this.addClass('menu__tab-btn--current');
-        $(currentContent).fadeIn(200);
-     });
+                for(j = 0; j < that.menuTab.length; j++){
+                    that.menuTab[j].classList.remove('menu__tab-btn--current');
+                }
+
+                this.classList.add('menu__tab-btn--current');
+
+                for(k = 0; k < that.menuContent.length; k++){
+                    that.menuContent[k].style.display = "none";
+                    that.menuContent[k].style.opacity = 0;
+                }
+                
+                let currentContent =  this.getAttribute('data-content'); 
+                let currentEl =  document.getElementById(currentContent);
+
+                currentEl.style.display = "block";
+
+                setTimeout(()=>currentEl.style.opacity = 1, 50);
+            });
+        }
     }
 }
 export default Menu;

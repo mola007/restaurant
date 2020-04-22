@@ -4,6 +4,8 @@ import 'owl.carousel';
 class OwlSlider{
 
     constructor(){  
+
+        console.log('owl wszystko, a teraz?');
       
         $('.owl-carousel').owlCarousel({
             center: true,      

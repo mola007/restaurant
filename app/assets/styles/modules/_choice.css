@@ -1,5 +1,6 @@
 .choice{
     overflow: hidden;
+  
     &__card{
 
         @mixin atLarge {
@@ -50,7 +51,7 @@
                     bottom: 8px;
                     left: -50px;
                     width: 4px;
-                    height: 100vh;
+                    height: 1000px;
                     background: #000;
                 }
             }
